@@ -30,7 +30,7 @@ module.exports.createUser = async (req, res, next) => {
 
 module.exports.getUsers = async (req, res, next) => {
   const {
-    query: { page, results },
+    query: { page = 1, results = 10 },
   } = req;
 
   // TODO pagination mw

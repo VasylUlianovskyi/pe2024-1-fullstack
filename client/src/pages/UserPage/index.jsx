@@ -4,7 +4,7 @@ import UsersList from '../../components/UsersList';
 function UserPage () {
   return (
     <section>
-      <h2>User Form</h2>
+      <h2>User Page</h2>
       <UserForm />
       <UsersList />
     </section>
