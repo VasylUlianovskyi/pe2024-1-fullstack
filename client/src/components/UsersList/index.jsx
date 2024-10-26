@@ -3,9 +3,15 @@ import { connect } from 'react-redux';
 import BeatLoader from 'react-spinners/BeatLoader';
 import styles from './UsersList.module.sass';
 import defImage from './defaultPhoto.jpg';
-import { getUsersThunk } from '../../store/slices/usersSlice';
+import { getUsersThunk, removeUserThunk } from '../../store/slices/usersSlice';
 
-export const UsersList = ({ users, isFetching, error, getUsers }) => {
+export const UsersList = ({
+  users,
+  isFetching,
+  error,
+  getUsers,
+  removeUser,
+}) => {
   useEffect(() => {
     getUsers();
   }, []);
@@ -22,7 +28,8 @@ export const UsersList = ({ users, isFetching, error, getUsers }) => {
               alt={u.nickname}
               className={styles.userImage}
             />
-            {JSON.stringify(u)}
+            <p> {JSON.stringify(u)}</p>
+            <button onClick={() => removeUser(u.id)}>X</button>
           </li>
         ))}
       </ul>
@@ -34,6 +41,7 @@ const mapStateToProps = ({ usersData }) => usersData;
 
 const mapDispatchToProps = dispatch => ({
   getUsers: () => dispatch(getUsersThunk()),
+  removeUser: id => dispatch(removeUserThunk(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersList);
