@@ -7,7 +7,7 @@ const usersRouter = Router();
 
 usersRouter
   .route('/')
-  .post(usersController.createUser)
+  .post(upload.uploadUserPhoto, usersController.createUser)
   .get(usersController.getUsers);
 
 usersRouter

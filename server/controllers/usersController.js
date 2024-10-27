@@ -6,8 +6,13 @@ const { STATIC_IMAGES_FOLDER } = require('../constants');
 
 // TODO yup validation mw (422)
 module.exports.createUser = async (req, res, next) => {
-  const { body } = req;
+  const { body, file } = req;
   console.log(body);
+
+  if (file) {
+    body.image = path.join(STATIC_IMAGES_FOLDER, file.filename);
+  }
+
   try {
     const createdUser = await User.create(body);
 
