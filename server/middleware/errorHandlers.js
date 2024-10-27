@@ -10,6 +10,7 @@ module.exports.multerErrorHandler = (err, req, res, next) => {
 };
 
 module.exports.dbErrorHandler = (err, req, res, next) => {
+  console.log(err);
   // Відловлюємо помилки Sequelize (https://sequelize.org/api/v6/identifiers.html#errors)
   // Помилки валідації (невалідне ім'я, рік народження з майбутнього, ...)
   if (err instanceof ValidationError) {

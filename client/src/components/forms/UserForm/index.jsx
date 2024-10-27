@@ -4,21 +4,26 @@ import { USER_VALIDATION_SCHEMA } from '../../../utils/validate/validationSchema
 import Input from '../Input';
 import CONSTANTS from './../../../constants';
 import styles from './UserForm.module.sass';
+import { createUserThunk } from '../../../store/slices/usersSlice';
 
 const { GENDERS } = CONSTANTS;
 
-function UserForm () {
+function UserForm ({ createUser }) {
   const initialValues = {
     nickname: '',
     email: '',
     passwHash: '',
     birthday: '',
     gender: GENDERS[0],
-    // userPhoto: '',
+    userPhoto: '',
   };
 
   const handleSubmit = (values, formikBag) => {
-    console.log('values :>> ', values);
+    if (!values.birthday) {
+      delete values.birthday;
+    }
+    console.log(values);
+    createUser(values);
     formikBag.resetForm();
   };
 
@@ -81,6 +86,8 @@ function UserForm () {
   );
 }
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  createUser: values => dispatch(createUserThunk(values)),
+});
 
 export default connect(null, mapDispatchToProps)(UserForm);
