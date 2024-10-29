@@ -6,13 +6,13 @@ const tasksRouter = Router();
 // /api/tasks
 tasksRouter
   .route('/')
-  .post(() => {})
+  .post(tasksController.createTask)
   .get(tasksController.getTasks);
 
 tasksRouter
   .route('/:taskId')
-  .get(() => {})
-  .patch(() => {})
-  .delete(() => {});
+  .get(tasksController.getTaskById)
+  .patch(tasksController.updateTaskById)
+  .delete(tasksController.deleteTaskById);
 
 module.exports = tasksRouter;
