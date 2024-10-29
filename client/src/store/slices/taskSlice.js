@@ -58,6 +58,23 @@ export const removeTaskThunk = createAsyncThunk(
   }
 );
 
+export const updateTaskThunk = createAsyncThunk(
+  `${TASKS_SLICE_NAME}/patch`,
+  async ({ taskId, payload }, thunkAPI) => {
+    try {
+      const {
+        data: { data },
+      } = await API.updateTask(taskId, payload);
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue({
+        status: err.response.status,
+        message: err.response.data.errors,
+      });
+    }
+  }
+);
+
 const tasksSlice = createSlice({
   name: TASKS_SLICE_NAME,
   initialState,
@@ -105,6 +122,25 @@ const tasksSlice = createSlice({
       }
     });
     builder.addCase(removeTaskThunk.rejected, (state, { payload }) => {
+      state.isFetching = false;
+      state.error = payload;
+    });
+
+    // update task
+    builder.addCase(updateTaskThunk.pending, state => {
+      state.isFetching = true;
+      state.error = null;
+    });
+    builder.addCase(updateTaskThunk.fulfilled, (state, { payload }) => {
+      state.isFetching = false;
+      const updatedTaskIndex = state.tasks.findIndex(
+        task => task.id === payload.id
+      );
+      if (updatedTaskIndex !== -1) {
+        state.tasks[updatedTaskIndex] = payload;
+      }
+    });
+    builder.addCase(updateTaskThunk.rejected, (state, { payload }) => {
       state.isFetching = false;
       state.error = payload;
     });

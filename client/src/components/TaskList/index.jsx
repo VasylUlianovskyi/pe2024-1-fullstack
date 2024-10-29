@@ -1,42 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { getTasks, updateTask, deleteTask } from './../../api';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import BeatLoader from 'react-spinners/BeatLoader';
+import {
+  getTasksThunk,
+  removeTaskThunk,
+  updateTaskThunk,
+} from './../../store/slices/taskSlice';
 
-const TaskList = ({ onTaskUpdated }) => {
-  const [taskList, setTaskList] = useState([]);
-
+const TaskList = ({
+  tasks,
+  isFetching,
+  error,
+  getTasks,
+  updateTask,
+  removeTask,
+  setFilter,
+}) => {
   useEffect(() => {
-    const fetchTasks = async () => {
-      const data = await getTasks();
-      setTaskList(data);
-    };
-    fetchTasks();
-  }, [onTaskUpdated]);
+    getTasks();
+  }, [getTasks]);
 
-  const handleCheckboxChange = async (id, isDone) => {
-    await updateTask(id, { isDone: !isDone });
-    onTaskUpdated();
-  };
-
-  const handleDelete = async id => {
-    await deleteTask(id);
-    onTaskUpdated();
+  const handleCheckboxChange = (id, isDone) => {
+    updateTask(id, { isDone: !isDone });
   };
 
   return (
-    <ul>
-      {taskList.map(task => (
-        <li key={task.id}>
-          <input
-            type='checkbox'
-            checked={task.isDone}
-            onChange={() => handleCheckboxChange(task.id, task.isDone)}
-          />
-          {task.description} - {task.deadline}
-          <button onClick={() => handleDelete(task.id)}>Delete</button>
-        </li>
-      ))}
-    </ul>
+    <>
+      <BeatLoader loading={isFetching} />
+      {error && <div>!!!ERROR!!!</div>}
+      <ul>
+        {tasks.map(task => (
+          <li key={task.id}>
+            <input
+              type='checkbox'
+              checked={task.isDone}
+              onChange={() => handleCheckboxChange(task.id, task.isDone)}
+            />
+            {task.body} - {task.deadline}
+            <button onClick={() => removeTask(task.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 
-export default TaskList;
+const mapStateToProps = ({ tasksData }) => ({
+  tasks: tasksData.tasks,
+  isFetching: tasksData.isFetching,
+  error: tasksData.error,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getTasks: () => dispatch(getTasksThunk()),
+  updateTask: (id, data) => dispatch(updateTaskThunk({ id, data })),
+  removeTask: id => dispatch(removeTaskThunk(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskList);

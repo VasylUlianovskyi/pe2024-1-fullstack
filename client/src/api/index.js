@@ -9,15 +9,24 @@ export const getUsers = () => httpClient.get('/users');
 export const removeUser = id => httpClient.delete(`/users/${id}`);
 
 export const fetchUsers = async () => {
-  const response = await fetch('/api/users');
-  if (!response.ok) throw new Error('Не вдалося завантажити користувачів');
-  return response.json();
+  try {
+    const usersData = await getUsers();
+    console.log('Fetched users:', usersData); // Додайте це для перевірки
+    if (Array.isArray(usersData)) {
+      setUsers(usersData);
+    } else {
+      console.error('Fetched data is not an array:', usersData);
+    }
+  } catch (error) {
+    console.error('Error fetching users:', error);
+  }
 };
 
 export const fetchTasks = async isDone => {
   const query = isDone !== undefined ? `?isDone=${isDone}` : '';
   const response = await fetch(`/api/tasks${query}`);
   if (!response.ok) throw new Error('Не вдалося завантажити таски');
+  console.log(data);
   return response.json();
 };
 
