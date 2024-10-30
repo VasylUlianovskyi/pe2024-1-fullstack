@@ -1,0 +1,7 @@
+###
+PATCH http://localhost:5000/api/tasks/16
+Content-Type: application/json
+
+{
+  "isDone": true
+}
