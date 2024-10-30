@@ -79,12 +79,15 @@ const TaskForm = ({ onTaskAdded }) => {
         required
       >
         <option value=''>Select User</option>
-        {users.map(user => (
-          <option key={`${user.id}-${user.nickname}`} value={user.id}>
-            {user.nickname} ({user.id})
-          </option>
-        ))}
-        <option disabled={!users.length}>No users available</option>
+        {Array.isArray(users) && users.length > 0 ? (
+          users.map(user => (
+            <option key={user.id} value={user.id}>
+              {user.nickname} ({user.id})
+            </option>
+          ))
+        ) : (
+          <option disabled>No users available</option>
+        )}
       </select>
       <button type='submit'>Add task</button>
     </form>
