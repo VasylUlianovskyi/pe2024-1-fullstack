@@ -16,8 +16,7 @@ const TaskForm = ({ onTaskAdded }) => {
     const fetchUsers = async () => {
       try {
         const usersData = await getUsers();
-        setUsers(usersData.data);
-        console.log('usersData >>', usersData.data);
+        setUsers(usersData.data.data);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -52,8 +51,6 @@ const TaskForm = ({ onTaskAdded }) => {
       [name]: value,
     }));
   };
-
-  console.log('users', users);
 
   return (
     <form className={styles.taskForm} onSubmit={handleSubmit}>

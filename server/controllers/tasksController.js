@@ -61,9 +61,16 @@ module.exports.updateTaskById = async (req, res, next) => {
   const { id } = req.params;
   const { body } = req;
 
+  console.log('Request params:', req.params);
+  console.log('Updating task with id:', id);
+  console.log('Update body:', body);
   try {
+    const taskId = parseInt(id, 10);
+    if (isNaN(taskId)) {
+      return next(createHttpError(400, 'Invalid task ID'));
+    }
     const [updatedCount, updatedTasks] = await Task.update(body, {
-      where: { id },
+      where: { id: taskId },
       returning: true,
     });
 

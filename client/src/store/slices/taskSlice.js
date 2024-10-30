@@ -65,6 +65,7 @@ export const updateTaskThunk = createAsyncThunk(
       const {
         data: { data },
       } = await API.updateTask(taskId, payload);
+      console.log('Updating task:', taskId, payload);
       return data;
     } catch (err) {
       return thunkAPI.rejectWithValue({
@@ -141,6 +142,7 @@ const tasksSlice = createSlice({
       }
     });
     builder.addCase(updateTaskThunk.rejected, (state, { payload }) => {
+      console.error('Error updating task:', payload);
       state.isFetching = false;
       state.error = payload;
     });

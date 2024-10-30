@@ -22,7 +22,8 @@ const TaskList = ({
   }, [getTasks]);
 
   const handleCheckboxChange = (id, isDone) => {
-    updateTask(id, { isDone: !isDone });
+    console.log(`Updating task with id: ${id}, new isDone: ${!isDone}`);
+    updateTask({ taskId: id, payload: { isDone: !isDone } });
   };
 
   return (
@@ -44,10 +45,12 @@ const TaskList = ({
                 handleCheckboxChange(task.id, task.isDone);
               }}
             />
-            {task.body} - {task.deadline}
+            {task.body} {task.deadline}
             <button
               className={styles.deleteButton}
-              onClick={() => removeTask(task.id)}
+              onClick={() => {
+                removeTask(task.id);
+              }}
             >
               Delete
             </button>
@@ -66,7 +69,8 @@ const mapStateToProps = ({ tasksData }) => ({
 
 const mapDispatchToProps = dispatch => ({
   getTasks: () => dispatch(getTasksThunk()),
-  updateTask: (id, data) => dispatch(updateTaskThunk({ id, data })),
+  updateTask: ({ taskId, payload }) =>
+    dispatch(updateTaskThunk({ taskId, payload })),
   removeTask: id => dispatch(removeTaskThunk(id)),
 });
 

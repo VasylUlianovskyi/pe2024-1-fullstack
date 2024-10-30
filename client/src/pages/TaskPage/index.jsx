@@ -11,10 +11,14 @@ const TaskPage = ({ getTasks, tasks }) => {
     getTasks();
   }, [getTasks]);
 
+  const handleTaskAdded = () => {
+    getTasks();
+  };
+
   return (
     <div className={styles.taskPage}>
       <h1>Task Page</h1>
-      <TaskForm />
+      <TaskForm onTaskAdded={handleTaskAdded} />
       <div className={styles.taskList}>
         <TaskList tasks={tasks} />
       </div>

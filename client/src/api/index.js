@@ -11,7 +11,7 @@ export const removeUser = id => httpClient.delete(`/users/${id}`);
 export const fetchUsers = async () => {
   try {
     const usersData = await getUsers();
-    console.log('Fetched users:', usersData); // Додайте це для перевірки
+    console.log('Fetched users:', usersData);
     if (Array.isArray(usersData.data)) {
       setUsers(usersData.data);
     } else {
