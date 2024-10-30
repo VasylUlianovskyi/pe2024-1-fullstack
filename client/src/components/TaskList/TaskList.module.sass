@@ -1,0 +1,42 @@
+.taskList
+  list-style-type: none
+  padding: 0
+
+  .taskItem
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 10px
+    border: 1px solid #ddd
+    border-radius: 5px
+    margin-bottom: 10px
+    background-color: #f9f9f9
+    transition: background-color 0.3s
+
+    &:hover
+      background-color: #f1f1f1
+
+    .checkbox
+      margin-right: 10px
+
+    .deleteButton
+      background-color: #e74c3c
+      color: white
+      border: none
+      border-radius: 5px
+      padding: 5px 10px
+      cursor: pointer
+      transition: background-color 0.3s
+
+      &:hover
+        background-color: #c0392b
+
+  .error
+    color: #e74c3c
+    font-weight: bold
+    margin-bottom: 10px
+
+  .loader
+    display: flex
+    justify-content: center
+    margin: 20px 0

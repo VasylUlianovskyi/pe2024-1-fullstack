@@ -1,0 +1,45 @@
+$form-padding: 15px
+$form-border-radius: 5px
+$button-background: #4CAF50
+$button-hover-background: #45a049
+$error-color: #e74c3c
+
+.taskForm
+  display: flex
+  flex-direction: column
+  width: 100%
+  max-width: 900vh
+  margin: 0 auto
+  padding: $form-padding
+  border: 1px solid #ddd
+  border-radius: $form-border-radius
+  background-color: #f9f9f9
+
+  input, select
+    margin-bottom: 15px
+    padding: $form-padding
+    border: 1px solid #ccc
+    border-radius: $form-border-radius
+    font-size: 16px
+
+    &:focus
+      border-color: #4CAF50
+      outline: none
+
+  button
+    padding: $form-padding
+    border: none
+    border-radius: $form-border-radius
+    background-color: $button-background
+    color: white
+    font-size: 16px
+    cursor: pointer
+    transition: background-color 0.3s
+
+    &:hover
+      background-color: $button-hover-background
+
+  .error
+    color: $error-color
+    font-weight: bold
+    margin-bottom: 15px

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import TaskForm from './../../components/forms/TaskForm';
 import TaskList from './../../components/TaskList';
 import { getTasksThunk } from './../../store/slices/taskSlice';
+import styles from './TaskPage.module.sass';
 
 const TaskPage = ({ getTasks, tasks }) => {
   const [filter, setFilter] = useState(null);
@@ -11,12 +12,14 @@ const TaskPage = ({ getTasks, tasks }) => {
   }, [getTasks]);
 
   return (
-    <div>
-      <h1>Сторінка тасок</h1>
+    <div className={styles.taskPage}>
+      <h1>Task Page</h1>
       <TaskForm />
-      <TaskList tasks={tasks} />
-      <button onClick={() => setFilter(true)}>Показати виконані</button>
-      <button onClick={() => setFilter(false)}>Показати невиконані</button>
+      <div className={styles.taskList}>
+        <TaskList tasks={tasks} />
+      </div>
+      <button onClick={() => setFilter(true)}>Show done tasks</button>
+      <button onClick={() => setFilter(false)}>Show not done tasks</button>
     </div>
   );
 };

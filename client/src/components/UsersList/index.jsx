@@ -17,7 +17,7 @@ export const UsersList = ({
   }, []);
 
   return (
-    <>
+    <div className={styles.usersList}>
       <BeatLoader loading={isFetching} />
       {error && <div>!!!ERROR!!!</div>}
       <ul>
@@ -28,12 +28,12 @@ export const UsersList = ({
               alt={u.nickname}
               className={styles.userImage}
             />
-            <p> {JSON.stringify(u)}</p>
+            <p>{JSON.stringify(u)}</p>
             <button onClick={() => removeUser(u.id)}>X</button>
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 };
 

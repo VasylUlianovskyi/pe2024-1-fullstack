@@ -6,6 +6,7 @@ import {
   removeTaskThunk,
   updateTaskThunk,
 } from './../../store/slices/taskSlice';
+import styles from './TaskList.module.sass';
 
 const TaskList = ({
   tasks,
@@ -26,18 +27,32 @@ const TaskList = ({
 
   return (
     <>
-      <BeatLoader loading={isFetching} />
-      {error && <div>!!!ERROR!!!</div>}
-      <ul>
+      {isFetching && (
+        <div className={styles.loader}>
+          <BeatLoader loading={isFetching} />
+        </div>
+      )}
+      {error && <div className={styles.error}>!!!ERROR!!!</div>}
+      <ul className={styles.taskList}>
         {tasks.map(task => (
-          <li key={task.id}>
+          <li key={task.id} className={styles.taskItem}>
+            {console.log('Task:', task)}
             <input
+              className={styles.checkbox}
               type='checkbox'
               checked={task.isDone}
-              onChange={() => handleCheckboxChange(task.id, task.isDone)}
+              onChange={() => {
+                console.log(`Task ID: ${task.id}, isDone: ${task.isDone}`);
+                handleCheckboxChange(task.id, task.isDone);
+              }}
             />
             {task.body} - {task.deadline}
-            <button onClick={() => removeTask(task.id)}>Delete</button>
+            <button
+              className={styles.deleteButton}
+              onClick={() => removeTask(task.id)}
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { createTask } from '../../../api'; // Adjust as needed;
-import { getUsers } from '../../../api'; // Adjust as needed
+import { createTask } from '../../../api';
+import { getUsers } from '../../../api';
+import styles from './TaskForm.module.sass';
 
 const TaskForm = ({ onTaskAdded }) => {
   const [users, setUsers] = useState([]);
@@ -15,8 +16,8 @@ const TaskForm = ({ onTaskAdded }) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const usersData = await getUsers(); // Отримайте дані про користувачів
-        setUsers(usersData); // Збережіть дані у стані
+        const usersData = await getUsers();
+        setUsers(usersData);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -33,18 +34,25 @@ const TaskForm = ({ onTaskAdded }) => {
       userId: values.userId,
     };
 
-    await createTask(newTask); // Adjust API call as needed
+    await createTask(newTask);
     onTaskAdded();
     formikBag.resetForm();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={styles.taskForm} onSubmit={handleSubmit}>
       <input
         type='text'
         value={initialValues.description}
         onChange={e => setDescription(e.target.value)}
-        placeholder='Опис таски'
+        placeholder='Task name'
+        required
+      />
+      <input
+        type='text'
+        value={initialValues.description}
+        onChange={e => setDescription(e.target.value)}
+        placeholder='Task description'
         required
       />
       <input
@@ -58,7 +66,7 @@ const TaskForm = ({ onTaskAdded }) => {
         onChange={e => setSelectedUserId(e.target.value)}
         required
       >
-        <option value=''>Виберіть користувача</option>
+        <option value=''>Select User</option>
         {Array.isArray(users) &&
           users.map(user => (
             <option key={user.id} value={user.id}>
@@ -66,13 +74,11 @@ const TaskForm = ({ onTaskAdded }) => {
             </option>
           ))}
       </select>
-      <button type='submit'>Додати таску</button>
+      <button type='submit'>Add task</button>
     </form>
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  // Define your dispatch actions here if needed
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(null, mapDispatchToProps)(TaskForm);
