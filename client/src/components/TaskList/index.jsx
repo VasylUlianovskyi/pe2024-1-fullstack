@@ -36,13 +36,11 @@ const TaskList = ({
       <ul className={styles.taskList}>
         {tasks.map(task => (
           <li key={task.id} className={styles.taskItem}>
-            {console.log('Task:', task)}
             <input
               className={styles.checkbox}
               type='checkbox'
               checked={task.isDone}
               onChange={() => {
-                console.log(`Task ID: ${task.id}, isDone: ${task.isDone}`);
                 handleCheckboxChange(task.id, task.isDone);
               }}
             />

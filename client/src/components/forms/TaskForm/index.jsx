@@ -6,18 +6,18 @@ import styles from './TaskForm.module.sass';
 
 const TaskForm = ({ onTaskAdded }) => {
   const [users, setUsers] = useState([]);
-
-  const initialValues = {
-    description: '',
+  const [taskData, setTaskData] = useState({
+    body: '',
     deadline: '',
     userId: '',
-  };
+  });
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const usersData = await getUsers();
-        setUsers(usersData);
+        setUsers(usersData.data);
+        console.log('usersData >>', usersData.data);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -26,53 +26,65 @@ const TaskForm = ({ onTaskAdded }) => {
     fetchUsers();
   }, []);
 
-  const handleSubmit = async (values, formikBag) => {
+  const handleSubmit = async e => {
+    e.preventDefault();
+
     const newTask = {
-      description: values.description,
-      deadline: values.deadline,
+      body: taskData.body,
+      deadline: taskData.deadline,
       isDone: false,
-      userId: values.userId,
+      userId: taskData.userId,
     };
 
-    await createTask(newTask);
-    onTaskAdded();
-    formikBag.resetForm();
+    try {
+      await createTask(newTask);
+      onTaskAdded();
+      setTaskData({ body: '', deadline: '', userId: '' });
+    } catch (error) {
+      console.error('Error creating task:', error);
+    }
   };
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setTaskData(prevData => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  console.log('users', users);
 
   return (
     <form className={styles.taskForm} onSubmit={handleSubmit}>
       <input
         type='text'
-        value={initialValues.description}
-        onChange={e => setDescription(e.target.value)}
+        name='body'
+        value={taskData.body}
+        onChange={handleChange}
         placeholder='Task name'
         required
       />
       <input
-        type='text'
-        value={initialValues.description}
-        onChange={e => setDescription(e.target.value)}
-        placeholder='Task description'
-        required
-      />
-      <input
         type='date'
-        value={initialValues.deadline}
-        onChange={e => setDeadline(e.target.value)}
+        name='deadline'
+        value={taskData.deadline}
+        onChange={handleChange}
         required
       />
       <select
-        value={initialValues.userId}
-        onChange={e => setSelectedUserId(e.target.value)}
+        name='userId'
+        value={taskData.userId}
+        onChange={handleChange}
         required
       >
         <option value=''>Select User</option>
-        {Array.isArray(users) &&
-          users.map(user => (
-            <option key={user.id} value={user.id}>
-              {user.nickname} ({user.id})
-            </option>
-          ))}
+        {users.map(user => (
+          <option key={`${user.id}-${user.nickname}`} value={user.id}>
+            {user.nickname} ({user.id})
+          </option>
+        ))}
+        <option disabled={!users.length}>No users available</option>
       </select>
       <button type='submit'>Add task</button>
     </form>

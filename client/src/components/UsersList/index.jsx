@@ -28,7 +28,9 @@ export const UsersList = ({
               alt={u.nickname}
               className={styles.userImage}
             />
-            <p>{JSON.stringify(u)}</p>
+            <p>
+              {u.nickname} {u.email}
+            </p>
             <button onClick={() => removeUser(u.id)}>X</button>
           </li>
         ))}

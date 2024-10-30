@@ -12,8 +12,8 @@ export const fetchUsers = async () => {
   try {
     const usersData = await getUsers();
     console.log('Fetched users:', usersData); // Додайте це для перевірки
-    if (Array.isArray(usersData)) {
-      setUsers(usersData);
+    if (Array.isArray(usersData.data)) {
+      setUsers(usersData.data);
     } else {
       console.error('Fetched data is not an array:', usersData);
     }
