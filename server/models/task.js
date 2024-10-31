@@ -1,6 +1,6 @@
 'use strict';
 const { format, addDays } = require('date-fns');
-const { Model } = require('sequelize');
+const { Model, BOOLEAN } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
     /**
@@ -34,6 +34,10 @@ module.exports = (sequelize, DataTypes) => {
           // пізніше за вчора
           isAfter: format(addDays(new Date(), -1), 'yyyy-MM-dd'),
         },
+      },
+      isDone: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     {

@@ -13,6 +13,7 @@ const TaskPage = ({ getTasks, tasks }) => {
 
   const handleTaskAdded = () => {
     getTasks();
+    setFilter(null);
   };
 
   return (
@@ -20,8 +21,9 @@ const TaskPage = ({ getTasks, tasks }) => {
       <h1>Task Page</h1>
       <TaskForm onTaskAdded={handleTaskAdded} />
       <div className={styles.taskList}>
-        <TaskList tasks={tasks} />
+        <TaskList tasks={tasks} filter={filter} />
       </div>
+      <button onClick={() => setFilter(null)}>Show all tasks</button>
       <button onClick={() => setFilter(true)}>Show done tasks</button>
       <button onClick={() => setFilter(false)}>Show not done tasks</button>
     </div>

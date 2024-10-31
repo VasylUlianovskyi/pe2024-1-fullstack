@@ -1,36 +1,29 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import styles from './App.module.sass';
 import UserPage from './pages/UserPage';
 import TaskPage from './pages/TaskPage';
 
 function App () {
-  const [activePage, setActivePage] = useState('users');
-  const togglePage = () => {
-    setActivePage(prevPage => (prevPage === 'users' ? 'tasks' : 'users'));
-  };
+  let location = useLocation();
 
   return (
-    <Router>
+    <>
       <div className={styles.app}>
         <nav>
-          <button onClick={togglePage}>
-            {activePage === 'users' ? 'Switch to Tasks' : 'Switsh to Users'}
-          </button>
+          {location.pathname === '/users' ? (
+            <Link to='/tasks'>Switch to Tasks</Link>
+          ) : (
+            <Link to='/users'>Switch to Users</Link>
+          )}
         </nav>
         <Routes>
-          <Route
-            path='/users'
-            element={activePage === 'users' ? <UserPage /> : <TaskPage />}
-          />
-          <Route
-            path='/tasks'
-            element={activePage === 'tasks' ? <TaskPage /> : <UserPage />}
-          />
-          <Route path='/users/:userId/tasks' element={<TaskPage />} />
+          <Route path='/users' element={<UserPage />} />
+          <Route path='/tasks' element={<TaskPage />} />
+          <Route path='/users/:userId/tasks' element={<UserPage />} />
         </Routes>
       </div>
-    </Router>
+    </>
   );
 }
 

@@ -15,16 +15,18 @@ const TaskList = ({
   getTasks,
   updateTask,
   removeTask,
-  setFilter,
+  filter,
 }) => {
   useEffect(() => {
     getTasks();
   }, [getTasks]);
 
   const handleCheckboxChange = (id, isDone) => {
-    console.log(`Updating task with id: ${id}, new isDone: ${!isDone}`);
     updateTask({ taskId: id, payload: { isDone: !isDone } });
   };
+
+  const filteredTask =
+    filter === null ? tasks : tasks.filter(t => t.isDone === filter);
 
   return (
     <>
@@ -35,7 +37,7 @@ const TaskList = ({
       )}
       {error && <div className={styles.error}>!!!ERROR!!!</div>}
       <ul className={styles.taskList}>
-        {tasks.map(task => (
+        {filteredTask.map(task => (
           <li key={task.id} className={styles.taskItem}>
             <input
               className={styles.checkbox}

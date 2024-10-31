@@ -36,4 +36,4 @@ export const getTasks = () => httpClient.get('/tasks');
 
 export const updateTask = (id, body) => httpClient.patch(`/tasks/${id}`, body);
 
-export const deleteTask = id => httpClient.delete(`/tasks/${id}`);
+export const removeTask = id => httpClient.delete(`/tasks/${id}`);

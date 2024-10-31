@@ -58,7 +58,7 @@ module.exports.getTaskById = async (req, res, next) => {
 
 // Update task by ID
 module.exports.updateTaskById = async (req, res, next) => {
-  const { id } = req.params;
+  const { taskId: id } = req.params;
   const { body } = req;
 
   console.log('Request params:', req.params);
@@ -90,10 +90,11 @@ module.exports.updateTaskById = async (req, res, next) => {
 
 // Delete task by ID
 module.exports.deleteTaskById = async (req, res, next) => {
-  const { id } = req.params;
+  const { taskId } = req.params;
+  console.log(taskId);
 
   try {
-    const deletedCount = await Task.destroy({ where: { id } });
+    const deletedCount = await Task.destroy({ where: { id: taskId } });
 
     if (deletedCount === 0) {
       return next(createHttpError(404, 'Task not found'));
@@ -102,5 +103,6 @@ module.exports.deleteTaskById = async (req, res, next) => {
     res.status(204).send();
   } catch (error) {
     next(error);
+    console.log(error);
   }
 };
