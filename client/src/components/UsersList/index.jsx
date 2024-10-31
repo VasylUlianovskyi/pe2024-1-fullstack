@@ -42,14 +42,21 @@ export const UsersList = ({
               </Link>
             </p>
 
-            {u.id == userId &&
-              tasks
-                .filter(t => t.userId === u.id)
-                .map(t => (
-                  <li>
-                    {t.body} {t.deadline}
-                  </li>
-                ))}
+            {u.id == userId && (
+              <>
+                {tasks
+                  .filter(t => t.userId === u.id)
+                  .map(t => (
+                    <p key={t.id} className={styles.tasks}>
+                      {t.body} {t.deadline}
+                    </p>
+                  ))}
+                {tasks.filter(t => t.userId === u.id).length === 0 && (
+                  <p className={styles.tasks}>User haven’t tasks</p>
+                )}
+              </>
+            )}
+
             <button onClick={() => removeUser(u.id)}>X</button>
           </li>
         ))}

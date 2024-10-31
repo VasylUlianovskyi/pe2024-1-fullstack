@@ -41,7 +41,6 @@ const TaskList = ({
       {error && <div className={styles.error}>!!!ERROR!!!</div>}
       <ul className={styles.taskList}>
         {filteredTask.map(task => {
-          // Знайдемо користувача для цього завдання
           const user = users.find(user => user.id === task.userId);
 
           return (
