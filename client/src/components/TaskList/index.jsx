@@ -7,7 +7,7 @@ import {
   updateTaskThunk,
 } from './../../store/slices/taskSlice';
 import styles from './TaskList.module.sass';
-
+import { getUsersThunk } from '../../store/slices/usersSlice';
 const TaskList = ({
   tasks,
   isFetching,
@@ -16,10 +16,13 @@ const TaskList = ({
   updateTask,
   removeTask,
   filter,
+  getUsers,
+  usersData: { users },
 }) => {
   useEffect(() => {
     getTasks();
-  }, [getTasks]);
+    getUsers();
+  }, [getTasks, getUsers]);
 
   const handleCheckboxChange = (id, isDone) => {
     updateTask({ taskId: id, payload: { isDone: !isDone } });
@@ -37,36 +40,39 @@ const TaskList = ({
       )}
       {error && <div className={styles.error}>!!!ERROR!!!</div>}
       <ul className={styles.taskList}>
-        {filteredTask.map(task => (
-          <li key={task.id} className={styles.taskItem}>
-            <input
-              className={styles.checkbox}
-              type='checkbox'
-              checked={task.isDone}
-              onChange={() => {
-                handleCheckboxChange(task.id, task.isDone);
-              }}
-            />
-            {task.body} {task.deadline}
-            <button
-              className={styles.deleteButton}
-              onClick={() => {
-                removeTask(task.id);
-              }}
-            >
-              Delete
-            </button>
-          </li>
-        ))}
+        {filteredTask.map(task => {
+          // Знайдемо користувача для цього завдання
+          const user = users.find(user => user.id === task.userId);
+
+          return (
+            <li key={task.id} className={styles.taskItem}>
+              <input
+                className={styles.checkbox}
+                type='checkbox'
+                checked={task.isDone}
+                onChange={() => handleCheckboxChange(task.id, task.isDone)}
+              />
+              {task.body} {task.deadline}, {'Executor: '}
+              {user ? user.nickname : 'Unknown User'}
+              <button
+                className={styles.deleteButton}
+                onClick={() => removeTask(task.id)}
+              >
+                Delete
+              </button>
+            </li>
+          );
+        })}
       </ul>
     </>
   );
 };
 
-const mapStateToProps = ({ tasksData }) => ({
+const mapStateToProps = ({ tasksData, usersData }) => ({
   tasks: tasksData.tasks,
   isFetching: tasksData.isFetching,
   error: tasksData.error,
+  usersData: usersData,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -74,6 +80,7 @@ const mapDispatchToProps = dispatch => ({
   updateTask: ({ taskId, payload }) =>
     dispatch(updateTaskThunk({ taskId, payload })),
   removeTask: id => dispatch(removeTaskThunk(id)),
+  getUsers: () => dispatch(getUsersThunk()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskList);

@@ -23,7 +23,6 @@ export const UsersList = ({
   useParams();
 
   let { userId } = useParams();
-  console.log(userId);
 
   return (
     <div className={styles.usersList}>
